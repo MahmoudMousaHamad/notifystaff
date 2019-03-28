@@ -5,6 +5,12 @@ SimpleSchema.extendOptions(['autoforms']);
 
 export const Notifications = new Mongo.Collection('notification');
 
+Notifications.allow({
+    insert() { return true; },
+    update() { return true; },
+    remove() { return true; },
+});
+
 var NotificationSchema = new SimpleSchema({
 
     notifierFN:{
@@ -21,10 +27,32 @@ var NotificationSchema = new SimpleSchema({
 
     read: {
         type: Boolean,
+        autoform:{
+            type: 'hidden',
+            label: false,
+        },
+        defaultValue: false,
+    },
+
+    toolID: {
+        type: String,
+        autoform:{
+            type: 'select',
+            options: function () {
+                return Tools.find().map(function(p) {
+                    return {label: `${p.toolNumber} ${p.type}`, value: p._id};
+                });
+            },
+        }
     },
 
     done: {
-        type: Boolean
+        type: Boolean,
+        autoform:{
+            type: 'hidden',
+            label: false,
+        },
+        defaultValue: false,
     },
 
     createdAt:{

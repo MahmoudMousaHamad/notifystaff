@@ -6,6 +6,8 @@ import { Gyms } from "../imports/api/gyms.js";
 import { Tools } from "../imports/api/tools.js";
 import { Notifications } from "../imports/api/notifications.js";
 
+import '../imports/api/methods';
+
 Meteor.startup(() => {
   // code to run on server at startup
   Meteor.publish("tools.allTools", () => {
@@ -32,11 +34,8 @@ Meteor.startup(() => {
     return Gyms.find();
   });
 
-  const notificationIDs = new Array();
-  const toolIDs = new Array();
 
   const numberGyms = Gyms.find().count();
-  var gymsCounter = 0;
   if (!numberGyms){
     _.times(20, () => {
       const name = faker.company.companyName();
@@ -45,13 +44,9 @@ Meteor.startup(() => {
       const province = faker.address.state();
       const zip = faker.address.zipCode();
       const country = faker.address.country();
-      var tools = new Array();
-      for(i = 0; i < 20; i++){
-        tools[i] = toolIDs[gymsCounter * 20 + i];
-      }
       const brandColor = faker.internet.color();
 
-      Gyms.insert({
+      Meteor.call('gym.insert', {
         name,
         street,
         city,
@@ -62,8 +57,6 @@ Meteor.startup(() => {
         brandColor,
         createdAt: new Date(),
       });
-
-      gymsCounter++;
     });
   }
 
@@ -75,16 +68,14 @@ Meteor.startup(() => {
       const comment = faker.random.words(10);
       const read = faker.random.boolean();
       const done = faker.random.boolean();
+      const toolID = faker.random.uuid();
 
-      const _id = faker.random.uuid();
-      notificationIDs.push(_id);
-
-      Notifications.insert({
-        _id,
+      Meteor.call('notification.insert', {
         notifierFN,
         notifierLN,
         comment,
         read,
+        toolID,
         done,
         createdAt: new Date(),
       });
@@ -92,30 +83,20 @@ Meteor.startup(() => {
   }
 
   const numberTools = Tools.find().count();
-  var toolsCounter = 0;
   if (!numberTools){
     _.times(400, () => {
       const type = faker.commerce.productName();
       const toolNumber = faker.random.number(40);
       const location = faker.random.words(4);
       var notifications = new Array();
-      for(i = 0; i < 20; i++){
-        notifications[i] = notificationIDs[toolsCounter * 20 + i]
-      }
 
-      const _id = faker.random.uuid();
-      toolIDs.push(_id);
-
-      Tools.insert({
-        _id,
+      Meteor.call('tool.insert', {
         type,
         toolNumber,
         location,
         notifications,
         createdAt: new Date(),
       });
-
-      toolsCounter++;
     });
   }
 

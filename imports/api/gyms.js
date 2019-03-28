@@ -4,6 +4,12 @@ SimpleSchema.extendOptions(['autoform', 'denyInsert', 'denyUpdate'])
 
 export const Gyms = new Mongo.Collection('gyms');
 
+Gyms.allow({
+    insert() { return true; },
+    update() { return true; },
+    remove() { return true; },
+});
+
 var GymSchema = new SimpleSchema({
 
     name:{type: String,},
@@ -17,10 +23,6 @@ var GymSchema = new SimpleSchema({
     zip:{type: String,},
 
     country:{type: String,},
-
-    tools: {type: Array,},
-
-    'tools.$': {type: String,},
 
     brandColor: {type: String,},
 

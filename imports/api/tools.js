@@ -5,6 +5,12 @@ SimpleSchema.extendOptions(['autoform']);
 
 export const Tools = new Mongo.Collection('tools');
 
+Tools.allow({
+    insert() { return true; },
+    update() { return true; },
+    remove() { return true; },
+}); 
+
 var ToolSchema = new SimpleSchema({
 
     type:{
@@ -16,14 +22,6 @@ var ToolSchema = new SimpleSchema({
     },
 
     location: {
-        type: String,
-    },
-
-    notifications: {
-        type: Array,
-    },
-
-    'notifications.$':{
         type: String,
     },
 

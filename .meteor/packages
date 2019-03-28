@@ -21,3 +21,7 @@ aldeed:collection2-core
 aldeed:autoform
 materialize:materialize
 momentjs:moment
+mozfet:autoform-materialize
+accounts-ui
+accounts-password
+iron:router
