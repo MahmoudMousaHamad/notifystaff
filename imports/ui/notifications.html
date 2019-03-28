@@ -1,0 +1,19 @@
+<template name="notifications">
+    <div class="collection">
+        {{#each notifications}}
+            {{> notification}}
+        {{/each}}
+    </div>
+</template>
+
+<template name="notification">
+    <a href="#!" class="collection-item">
+        {{#if read}}
+            <span class="new badge" data-badge-caption="">{{formatDate createdAt}}</span>
+        {{else}}
+            <span class="new badge red" data-badge-caption="">{{formatDate createdAt}}</span>
+        {{/if}}
+        Done: {{#if done}} Yes {{else}} No {{/if}} <br>
+        Equipment: {{toolID}}
+    </a>
+</template>
