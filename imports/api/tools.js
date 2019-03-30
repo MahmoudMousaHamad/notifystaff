@@ -1,6 +1,8 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from 'simpl-schema';
 
+import { Gyms } from "../api/gyms";
+
 SimpleSchema.extendOptions(['autoform']);
 
 export const Tools = new Mongo.Collection('tools');
@@ -24,6 +26,29 @@ var ToolSchema = new SimpleSchema({
     location: {
         type: String,
     },
+
+    gymID: { 
+        type: String,
+        autoform: {
+            type: 'hidden',
+            label: false,
+        },
+        autoValue: function(){
+            const gym = Gyms.findOne({ownerID: Meteor.userId()});
+            return gym._id;
+        },
+    },
+
+    notifications: { 
+        type: Array,
+        optional: true,
+        autoform: {
+            type: 'hidden',
+            label: false,
+        },
+     },
+
+    'notifications.$': { type: String },
 
     createdAt:{
         type: Date,

@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
 
 import { Gyms } from "./gyms";
 import { Tools } from "./tools";
@@ -6,12 +7,18 @@ import { Notifications } from "./notifications";
 
 Meteor.methods({
     'gym.insert'(gym){
+        gym._id = Random.id();
         Gyms.insert(gym);
+        Meteor.users.update(this.userId, {
+            $set: {
+                gymID: gym._id,
+            },
+        });
     },
 
     'gym.update'(gym){
-        const {name, street, city, province, zip, country, brandColor} = gym.modifier.$set;
-        Gyms.update(gym._id, {name, street, city, province, zip, country, brandColor});
+        const {name, street, city, province, zip, country, brandColor, ownerID, tools} = gym.modifier.$set;
+        Gyms.update(gym._id, {name, street, city, province, zip, country, brandColor, ownerID, tools});
     },
 
     'gym.remove'(gym){
@@ -23,8 +30,8 @@ Meteor.methods({
     },
 
     'tool.update'(tool){
-        const {type, toolNumber, location} = tool.modifier.$set;
-        Tools.update(tool._id, {type, toolNumber, location});
+        const {type, toolNumber, location, gymID, notifications} = tool.modifier.$set;
+        Tools.update(tool._id, {type, toolNumber, location, gymID, notifications});
     },
 
     'tool.remove'(tool){

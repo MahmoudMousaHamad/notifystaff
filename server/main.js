@@ -33,71 +33,15 @@ Meteor.startup(() => {
   Meteor.publish('gyms.allGyms', () => {
     return Gyms.find();
   });
+});
 
 
-  const numberGyms = Gyms.find().count();
-  if (!numberGyms){
-    _.times(20, () => {
-      const name = faker.company.companyName();
-      const street = faker.address.streetName();
-      const city = faker.address.city();
-      const province = faker.address.state();
-      const zip = faker.address.zipCode();
-      const country = faker.address.country();
-      const brandColor = faker.internet.color();
+Accounts.onCreateUser(function(options, user){
+  user.gymID = "";
 
-      Meteor.call('gym.insert', {
-        name,
-        street,
-        city,
-        province,
-        zip,
-        country,
-        tools,
-        brandColor,
-        createdAt: new Date(),
-      });
-    });
+  if (options.profile) {
+    user.profile = options.profile;
   }
 
-  const numberNotifications = Notifications.find().count();
-  if (!numberNotifications){
-    _.times(400, () => {
-      const notifierFN = faker.name.firstName();
-      const notifierLN = faker.name.lastName(40);
-      const comment = faker.random.words(10);
-      const read = faker.random.boolean();
-      const done = faker.random.boolean();
-      const toolID = faker.random.uuid();
-
-      Meteor.call('notification.insert', {
-        notifierFN,
-        notifierLN,
-        comment,
-        read,
-        toolID,
-        done,
-        createdAt: new Date(),
-      });
-    });
-  }
-
-  const numberTools = Tools.find().count();
-  if (!numberTools){
-    _.times(400, () => {
-      const type = faker.commerce.productName();
-      const toolNumber = faker.random.number(40);
-      const location = faker.random.words(4);
-      var notifications = new Array();
-
-      Meteor.call('tool.insert', {
-        type,
-        toolNumber,
-        location,
-        notifications,
-        createdAt: new Date(),
-      });
-    });
-  }
-
+  return user;
 });

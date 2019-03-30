@@ -37,6 +37,7 @@ var NotificationSchema = new SimpleSchema({
     toolID: {
         type: String,
         autoform:{
+            label: 'Tool',
             type: 'select',
             options: function () {
                 return Tools.find().map(function(p) {

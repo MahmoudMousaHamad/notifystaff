@@ -24,7 +24,33 @@ var GymSchema = new SimpleSchema({
 
     country:{type: String,},
 
-    brandColor: {type: String,},
+    brandColor: {
+        type: String,
+        autoform: {
+            type: 'color',
+        },
+    },
+
+    ownerID: { 
+        type: String,
+        optional: true,
+        autoform: {
+            type: 'hidden',
+            label: false,
+        },
+        autoValue: function() {return this.userId},
+     },
+
+    tools: { 
+        type: Array,
+        optional: true,
+        autoform: {
+            type: 'hidden',
+            label: false,
+        },
+     },
+
+    'tools.$': { type: String },
 
     createdAt:{
         type: Date,

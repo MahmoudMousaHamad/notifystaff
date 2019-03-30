@@ -18,6 +18,26 @@
     </div>
 </template>
 
+<template name="userTools">
+        <div class="row">
+            <div class="col s12">
+                <a class="waves-effect waves-light btn modal-trigger " href="#modal1">Create new equipment</a>
+            </div>
+            {{#each usertools}}
+                {{> tool}}
+            {{/each}}
+        </div>
+        <div id="modal1" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Create new equipment</h4>
+                {{> quickForm collection="Tools" id="insertToolForm" type="method" meteormethod="tool.insert"}}
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+    </template>
+    
 <template name="tool">
     <div class="col s6">
         <div class="card">
